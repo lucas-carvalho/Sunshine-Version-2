@@ -8,6 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,7 +62,34 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
+            String[] forecastArray = {
+                    "Monday - Sunny",
+                    "Tueday - Rainy",
+                    "Wednesday - Cloudy",
+                    "Thursday - Sunny",
+                    "Friday - Heavy Rain",
+                    "Saturday - Sunny",
+                    "Sunday - Cloudy"
+            };
+
+            List<String> weekForecast = new ArrayList<String>(
+                Arrays.asList(forecastArray));
+
+            ArrayAdapter<String> adapterForecast = new ArrayAdapter<String>(
+
+                getActivity(),
+                R.layout.list_item_forecast,
+                R.id.list_item_forecast_textview,
+                weekForecast
+            );
+
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            ListView forecastListView = rootView.findViewById(R.id.listview_forecast);
+
+            forecastListView.setAdapter(adapterForecast);
+
             return rootView;
         }
     }
