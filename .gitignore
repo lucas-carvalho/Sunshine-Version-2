@@ -39,5 +39,7 @@ project.properties
 *.iws
 
 ##Gradle-based build
-.gradle
 build/
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!.gradle/buildOutputCleanup/cache.properties.lock
