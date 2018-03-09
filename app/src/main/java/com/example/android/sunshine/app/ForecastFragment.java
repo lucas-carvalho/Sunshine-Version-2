@@ -38,6 +38,8 @@ import java.util.Locale;
 
 public class ForecastFragment extends Fragment {
 
+    private ArrayAdapter<String> adapterForecast;
+
     public ForecastFragment() {
     }
 
@@ -81,7 +83,7 @@ public class ForecastFragment extends Fragment {
         List<String> weekForecast = new ArrayList<String>(
                 Arrays.asList(forecastArray));
 
-        ArrayAdapter<String> adapterForecast = new ArrayAdapter<String>(
+        adapterForecast = new ArrayAdapter<String>(
 
                 getActivity(),
                 R.layout.list_item_forecast,
@@ -169,12 +171,12 @@ public class ForecastFragment extends Fragment {
                 highAndLow = formatHighLows(high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
-
-            for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Forecast entry: " + s);
-            }
             return resultStrs;
 
+        }
+
+        public FetchWeatherTask() {
+            super();
         }
 
         @Override
@@ -252,8 +254,6 @@ public class ForecastFragment extends Fragment {
                 }
                 forecastJsonStr = buffer.toString();
 
-                Log.v(LOG_TAG, "Forecast JSON String: " + forecastJsonStr);
-
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
@@ -281,6 +281,16 @@ public class ForecastFragment extends Fragment {
 
             // This will only happen if there was an error getting or parsing the forecast.
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            if (result != null) {
+                adapterForecast.clear();
+                for (String dayForecastStr : result) {
+                    adapterForecast.add(dayForecastStr);
+                }
+            }
         }
     }
 }
